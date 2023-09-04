@@ -1,17 +1,20 @@
 # springboot_hm_dianping_demo
 
 #### 介绍
-有关redis后端代码
+springboot+redis点评客户端demo
 
-#### 软件架构
-软件架构说明
+#### 环境部署
+后端代码：
+前端代码；
 
 
-#### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 项目演示
+
+1.  短信验证
+2.  redis缓存
+3.  redis分布式锁
+4.  redis消息队列
 
 #### 使用说明
 
