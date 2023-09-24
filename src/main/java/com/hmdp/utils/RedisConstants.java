@@ -21,6 +21,9 @@ public class RedisConstants {
      */
     public static final Long LOGIN_USER_TTL = 30L;
 
+    /**
+     * 缓存空值 null redis key
+     */
     public static final Long CACHE_NULL_TTL = 2L;
 
     /**
@@ -43,7 +46,14 @@ public class RedisConstants {
      */
     public static final Long CACHE_SHOP_TYPE_TTL = 30L;
 
+    /**
+     * 互斥锁 redis key
+     */
     public static final String LOCK_SHOP_KEY = "lock:shop:";
+
+    /**
+     * 互斥锁 过期时间 redis key
+     */
     public static final Long LOCK_SHOP_TTL = 10L;
 
     public static final String SECKILL_STOCK_KEY = "seckill:stock:";

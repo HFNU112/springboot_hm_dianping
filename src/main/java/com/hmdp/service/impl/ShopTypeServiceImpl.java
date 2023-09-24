@@ -56,7 +56,7 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
         if (shopTypeList.size() != 0){
             //存在，遍历List集合写入redis
             for (ShopType shopType : shopTypeList) {
-                stringRedisTemplate.opsForList().rightPushAll(CACHE_SHOP_TYPE_KEY,JSONUtil.toJsonStr(shopType));
+                stringRedisTemplate.opsForList().rightPushAll(CACHE_SHOP_TYPE_KEY + UserHolder.getUser().getId(),JSONUtil.toJsonStr(shopType));
                 stringRedisTemplate.expire(CACHE_SHOP_TYPE_KEY, CACHE_SHOP_TYPE_TTL, TimeUnit.MINUTES);
             }
         }
