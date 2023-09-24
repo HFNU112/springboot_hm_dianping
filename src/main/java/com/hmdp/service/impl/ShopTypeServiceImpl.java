@@ -6,6 +6,7 @@ import com.hmdp.entity.ShopType;
 import com.hmdp.mapper.ShopTypeMapper;
 import com.hmdp.service.IShopTypeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hmdp.utils.UserHolder;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
         //创建List集合存储店铺类型
         List<ShopType> shopTypes = new ArrayList<>();
         //1.从redis中查询店铺类型
-        List<String> shopTypeJsons = stringRedisTemplate.opsForList().range(CACHE_SHOP_TYPE_KEY, 0, -1);
+        List<String> shopTypeJsons = stringRedisTemplate.opsForList().range(CACHE_SHOP_TYPE_KEY + UserHolder.getUser().getId(), 0, -1);
         //2.判断是否命中
         if (shopTypeJsons.size() != 0){
             //命中，遍历集合返回数据
