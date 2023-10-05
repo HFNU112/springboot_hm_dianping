@@ -4,9 +4,6 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
-import com.hmdp.dto.Result;
-import com.hmdp.entity.Shop;
 import com.hmdp.entity.vo.RedisData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -44,6 +41,34 @@ public class CacheClient {
     public void set(String key, Object value, Long time, TimeUnit unit) {
         stringRedisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(value), time, unit);
     }
+
+    public <R,ID> R queryWithPathThrough(String prefix, ID id, Class<R> type, Function<ID, R> dbFallback, Long time, TimeUnit unit) {
+        String key = prefix + id;
+        //1.从redis中查询商铺
+        String shopJson = stringRedisTemplate.opsForValue().get(key);
+        //2.判断缓存是否命中
+        if (StrUtil.isNotBlank(shopJson)) {
+            //缓存存在
+            return JSONUtil.toBean(shopJson,type);
+        }
+        //判断命中的是否是空值
+        if (shopJson != null){
+            return null;
+        }
+        // 查询数据库
+        R r = dbFallback.apply(id);
+
+        // 不存在，返回错误
+        if (r == null){
+            // 空值写入redis
+            stringRedisTemplate.opsForValue().set(key, "", CACHE_NULL_TTL, TimeUnit.MINUTES);
+            return null;
+        }
+        //结果存入redis
+        this.set(key, r, time, unit);
+        return r;
+    }
+
 
     public void setWithLogicalExpire(String key, Object value, Long time, TimeUnit unit) {
         // 设置逻辑过期
@@ -150,7 +175,5 @@ public class CacheClient {
     private void delLock(String lockKey) {
         stringRedisTemplate.delete(lockKey);
     }
-
-
 
 }
