@@ -65,5 +65,8 @@ public class RedisConstants {
      */
     public static final String SHOP_GEO_KEY = "shop:geo:";
 
+    /**
+     * 用户签到 redis key
+     */
     public static final String USER_SIGN_KEY = "sign:";
 }

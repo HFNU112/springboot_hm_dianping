@@ -24,6 +24,12 @@ start nginx  启动
 2.  redis缓存
 3.  redis分布式锁
 4.  redis消息队列
+5.  redis的GEOHash地理坐标
+6.  redis的HyperLogLog数据集合统计功能
+7.  redis的BitMap的位图统计功能
+8.  redis的Set集合
+9.  redis的List集合列表
+10. redis的Sorted Sets排行榜
 
 #### 使用说明
 

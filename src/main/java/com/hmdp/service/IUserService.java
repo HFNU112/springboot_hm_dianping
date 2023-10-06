@@ -27,4 +27,9 @@ public interface IUserService extends IService<User> {
      */
     Result login(LoginFormDTO loginForm, HttpSession session);
 
+    /**
+     * 用户当天签到
+     */
+    Result sign();
+
 }
