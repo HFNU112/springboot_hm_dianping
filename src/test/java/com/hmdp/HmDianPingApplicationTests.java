@@ -2,6 +2,8 @@ package com.hmdp;
 
 import com.hmdp.entity.Shop;
 import com.hmdp.service.IShopService;
+import com.hmdp.utils.RedisIdWorker;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.geo.Point;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static com.hmdp.utils.RedisConstants.SHOP_GEO_KEY;
 
+@Slf4j
 @SpringBootTest
 class HmDianPingApplicationTests {
 
@@ -24,6 +27,9 @@ class HmDianPingApplicationTests {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private RedisIdWorker redisIdWorker;
 
     /**
      * 导入店铺数据到 geo
