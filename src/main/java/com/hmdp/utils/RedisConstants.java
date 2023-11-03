@@ -9,7 +9,7 @@ public class RedisConstants {
     /**
      * 验证码失效时间 redis key
      */
-    public static final Long LOGIN_CODE_TTL = 2L;
+    public static final Long LOGIN_CODE_TTL = 5L;
 
     /**
      * 登录token redis key
@@ -66,7 +66,25 @@ public class RedisConstants {
      */
     public static final Long SECKILL_STOCK_TTL = 30L;
 
+    /**
+     * 笔记缓存 redis key
+     */
+    public static final String CACHE_BLOG_KEY = "cache:blog:";
+
+    /**
+     * 笔记缓存过期时间 redis key
+     */
+    public static final Long CACHE_BLOG_TTL = 30L;
+
+    /**
+     * 笔记点赞 redis key
+     */
     public static final String BLOG_LIKED_KEY = "blog:liked:";
+
+    /**
+     * 笔记点赞过期时间 redis key
+     */
+    public static final Long BLOG_LIKED_TTL = 30L;
     public static final String FEED_KEY = "feed:";
 
     /**

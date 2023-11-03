@@ -32,25 +32,31 @@ public class BlogController {
     @Resource
     private IUserService userService;
 
+    /**
+     * 发布笔记
+     * @param blog
+     * @return
+     */
     @PostMapping
     public Result saveBlog(@RequestBody Blog blog) {
-        // 获取登录用户
-        UserDTO user = UserHolder.getUser();
-        blog.setUserId(user.getId());
-        // 保存探店博文
-        blogService.save(blog);
-        // 返回id
-        return Result.ok(blog.getId());
+        return blogService.saveBlog(blog);
     }
 
+    /**
+     * 统计笔记点赞数量
+     * @param id
+     * @return
+     */
     @PutMapping("/like/{id}")
     public Result likeBlog(@PathVariable("id") Long id) {
-        // 修改点赞数量
-        blogService.update()
-                .setSql("liked = liked + 1").eq("id", id).update();
-        return Result.ok();
+        return blogService.updateLikeBlog(id);
     }
 
+    /**
+     * 查看我的笔记
+     * @param current
+     * @return
+     */
     @GetMapping("/of/me")
     public Result queryMyBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
         // 获取登录用户
@@ -79,5 +85,25 @@ public class BlogController {
             blog.setIcon(user.getIcon());
         });
         return Result.ok(records);
+    }
+
+    /**
+     * 根据笔记id查询笔记
+     * @param id
+     * @return
+     */
+    @GetMapping("{id}")
+    public Result queryBlogById(@PathVariable("id") Long id){
+        return blogService.queryBlogById(id);
+    }
+
+    /**
+     * 查看笔记点赞列表
+     * @param id
+     * @return
+     */
+    @GetMapping("/likes/{id}")
+    public Result queryBlogLikes(@PathVariable("id") Long id){
+        return blogService.queryBlogLikes(id);
     }
 }

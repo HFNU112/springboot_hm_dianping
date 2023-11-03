@@ -55,7 +55,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 //        session.setAttribute("code",code);
         stringRedisTemplate.opsForValue().set(LOGIN_CODE_KEY + phone, code, LOGIN_CODE_TTL, TimeUnit.MINUTES);
         // 4.发送验证码 接入oss阿里云短信服务--->模拟短信
-        log.debug("短信发送成功，您的验证码是【" + code +"】");
+        log.debug("【黑马点评】尊敬的用户，您正在进行手机号码登录操作。验证码是:【" + code +"】。如非本人操作，还请忽略。五分钟内有效");
         return Result.ok();
     }
 
