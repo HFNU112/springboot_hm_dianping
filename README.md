@@ -5,9 +5,10 @@ springboot+redis在线点评客户端项目
 
 #### 环境部署
 后端代码：git clone https://gitee.com/hfnu_112/springboot_hm_dianping_demo.git
-         git checkout develop
+          git checkout develop
 
 前端代码；git clone https://gitee.com/huyi612/hmdp-web.git
+
 工程部署到nginx: cd E:/springboot_03_web_work/nginx-1.18.0/html/hmdp  (我的nginx目录)
 
 前端工程运行：
@@ -20,16 +21,26 @@ start nginx  启动
 
 #### 项目演示
 
-1.  短信验证
-2.  redis缓存
-3.  redis分布式锁
-4.  redis消息队列
-5.  redis的GEOHash地理坐标
-6.  redis的HyperLogLog数据集合统计功能
-7.  redis的BitMap的位图统计功能
-8.  redis的Set集合
-9.  redis的List集合列表
-10. redis的Sorted Sets排行榜
+1、短信验证
+    
+2、redis缓存
+
+3、redis分布式锁
+
+4、redis消息队列
+
+5、redis的GEOHash地理坐标
+
+6、redis的HyperLogLog数据集合统计功能
+
+7、redis的BitMap的位图统计功能
+
+8、redis的Set集合
+
+9、redis的List集合列表
+
+10、redis的Sorted Sets排行榜
+
 
 #### 使用说明
 
