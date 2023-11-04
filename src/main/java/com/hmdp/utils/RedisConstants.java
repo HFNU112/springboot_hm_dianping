@@ -85,6 +85,9 @@ public class RedisConstants {
      * 笔记点赞过期时间 redis key
      */
     public static final Long BLOG_LIKED_TTL = 30L;
+
+    public static final String CACHE_FOLLOW_KEY = "cache:follow:";
+
     public static final String FEED_KEY = "feed:";
 
     /**

@@ -42,6 +42,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Resource
+    private IUserService userService;
+
     @Override
     public Result sendCode(String phone, HttpSession session) {
         // 1.校验手机号
@@ -116,6 +119,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         stringRedisTemplate.opsForValue().setBit(key, dayOfMonth - 1, true);
         stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
         return Result.ok();
+    }
+
+    @Override
+    public Result queryUserById(Long userId) {
+        User user = userService.getById(userId);
+        if (user == null){
+            return Result.ok();
+        }
+        UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
+        return Result.ok(userDTO);
     }
 
     private User createUserWithPhone(String phone) {

@@ -69,6 +69,7 @@ public class BlogController {
 
     /**
      * 查询热门笔记列表
+     * TODO 补充需求分页查询笔记加redis 缓存
      * @param current
      * @return
      */
@@ -79,6 +80,7 @@ public class BlogController {
 
     /**
      * 查询发布的笔记
+     * TODO 补充需求笔记缓存加到redis
      * @param id
      * @return
      */
@@ -96,4 +98,14 @@ public class BlogController {
     public Result queryBlogLikes(@PathVariable("id") Long id){
         return blogService.queryBlogLikes(id);
     }
+
+    /**
+     * 查看发布人发布笔记
+     */
+    @GetMapping("/of/user")
+    public Result queryBlogByUserId(@RequestParam("id") Long userId,@RequestParam(value = "current", defaultValue = "1") Integer current){
+        return blogService.queryBlogByUserId(userId, current);
+    }
+
+
 }

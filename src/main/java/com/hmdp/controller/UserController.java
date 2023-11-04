@@ -86,4 +86,12 @@ public class UserController {
     public Result sign(){
         return userService.sign();
     }
+
+    /**
+     * 查询用户详情
+     */
+    @GetMapping("{id}")
+    public Result queryUserById(@PathVariable("id") Long userId){
+        return userService.queryUserById(userId);
+    }
 }

@@ -2,6 +2,7 @@ package com.hmdp.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.dto.Result;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.hmdp.utils.RedisConstants.*;
+import static com.hmdp.utils.SystemConstants.MAX_PAGE_SIZE;
 
 /**
  * <p>
@@ -133,7 +135,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
     public Result queryHotBlog(Integer current) {
         Page<Blog> page = query()
                 .orderByDesc("liked")
-                .page(new Page<>(current, SystemConstants.MAX_PAGE_SIZE));
+                .page(new Page<>(current, MAX_PAGE_SIZE));
         // 获取当前页数据
         List<Blog> records = page.getRecords();
         // 查询用户
@@ -142,6 +144,15 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
             this.isBlogLiked(blog);
         });
         //返回Blog集合
+        return Result.ok(records);
+    }
+
+    @Override
+    public Result queryBlogByUserId(Long userId, Integer current) {
+        Page<Blog> blogPage = query()
+                .eq("user_id", userId)
+                .page(new Page<Blog>(current, MAX_PAGE_SIZE));
+        List<Blog> records = blogPage.getRecords();
         return Result.ok(records);
     }
 
