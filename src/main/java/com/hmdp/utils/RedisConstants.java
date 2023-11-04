@@ -86,9 +86,15 @@ public class RedisConstants {
      */
     public static final Long BLOG_LIKED_TTL = 30L;
 
+    /**
+     * 关注 缓存 redis key
+     */
     public static final String CACHE_FOLLOW_KEY = "cache:follow:";
 
-    public static final String FEED_KEY = "feed:";
+    /**
+     * 推送笔记缓存 redis key
+     */
+    public static final String CACHE_FEED_KEY = "cache:feed:";
 
     /**
      * geo 搜索路径 redis key
