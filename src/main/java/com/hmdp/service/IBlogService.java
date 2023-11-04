@@ -21,4 +21,6 @@ public interface IBlogService extends IService<Blog> {
     Result updateLikeBlog(Long id);
 
     Result queryBlogLikes(Long id);
+
+    Result queryHotBlog(Integer current);
 }

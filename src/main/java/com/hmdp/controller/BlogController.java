@@ -29,8 +29,6 @@ public class BlogController {
 
     @Resource
     private IBlogService blogService;
-    @Resource
-    private IUserService userService;
 
     /**
      * 发布笔记
@@ -43,7 +41,7 @@ public class BlogController {
     }
 
     /**
-     * 统计笔记点赞数量
+     * 修改笔记点赞状态
      * @param id
      * @return
      */
@@ -69,26 +67,18 @@ public class BlogController {
         return Result.ok(records);
     }
 
+    /**
+     * 查询热门笔记列表
+     * @param current
+     * @return
+     */
     @GetMapping("/hot")
     public Result queryHotBlog(@RequestParam(value = "current", defaultValue = "1") Integer current) {
-        // 根据用户查询
-        Page<Blog> page = blogService.query()
-                .orderByDesc("liked")
-                .page(new Page<>(current, SystemConstants.MAX_PAGE_SIZE));
-        // 获取当前页数据
-        List<Blog> records = page.getRecords();
-        // 查询用户
-        records.forEach(blog ->{
-            Long userId = blog.getUserId();
-            User user = userService.getById(userId);
-            blog.setName(user.getNickName());
-            blog.setIcon(user.getIcon());
-        });
-        return Result.ok(records);
+        return blogService.queryHotBlog(current);
     }
 
     /**
-     * 根据笔记id查询笔记
+     * 查询发布的笔记
      * @param id
      * @return
      */
