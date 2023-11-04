@@ -58,7 +58,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     /**
      * 更新商铺信息
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Result updateShop(Shop shop) {
         Long id = shop.getId();

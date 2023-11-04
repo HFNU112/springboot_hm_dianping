@@ -75,10 +75,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
             return Result.fail("笔记id不能为空！");
         }
         // 1.操作数据库 执行增、删、改 出现异常需要回滚事务update tb_blog set liked = liked + 1 where id = ?
-        update().setSql("liked = liked + 1").eq("id", id).update();
+        boolean isFlag = update().setSql("liked = liked + 1").eq("id", id).update();
 
-        // 2.删除缓存
-        stringRedisTemplate.delete(CACHE_BLOG_KEY + id);
+        if (!isFlag){
+            // 2.删除缓存
+            stringRedisTemplate.delete(CACHE_BLOG_KEY + id);
+        }
         return Result.ok();
     }
 
