@@ -107,5 +107,12 @@ public class BlogController {
         return blogService.queryBlogByUserId(userId, current);
     }
 
+    /**
+     * 查询关注用户的笔记
+     */
+    @GetMapping("/of/follow")
+    public Result queryBlogOfFollow(@RequestParam("lastId") Long max, @RequestParam(value = "offset", defaultValue = "0") Integer offset){
+        return blogService.queryBlogOfFollow(max, offset);
+    }
 
 }
