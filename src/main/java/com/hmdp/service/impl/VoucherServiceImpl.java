@@ -44,7 +44,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addSeckillVoucher(Voucher voucher) {
         // 保存优惠券表
         save(voucher);
