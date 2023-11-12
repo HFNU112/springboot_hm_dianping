@@ -9,14 +9,16 @@ import com.hmdp.service.ISeckillVoucherService;
 import com.hmdp.service.IVoucherOrderService;
 import com.hmdp.utils.RedisIdWorker;
 import com.hmdp.utils.UserHolder;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author 虎哥
@@ -40,39 +42,57 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         SeckillVoucher voucher = seckillVoucherService.getById(voucherId);
 
         //2. 判断优惠券的日期是否生效
-        if (voucher.getBeginTime().isAfter(LocalDateTime.now())){
+        if (voucher.getBeginTime().isAfter(LocalDateTime.now())) {
             //如果没有生效
             return Result.fail("尚未到抢购时间，请您稍后在来...");
         }
-        if (voucher.getEndTime().isBefore(LocalDateTime.now())){
+        if (voucher.getEndTime().isBefore(LocalDateTime.now())) {
             return Result.fail("本次活动已结束，请您关注后续...");
         }
         //3. 时间生效，判断库存是否充足
-        if (voucher.getStock() < 1){
+        if (voucher.getStock() < 1) {
             return Result.fail("很抱歉，本次活动已经抢完了");
         }
-        //如果库存充足，先扣减库存
-        /**
-         * 解决线程不安全问题：乐观锁（CAS）WHERE (voucher_id = ? and stock = ?)
-         *                     WHERE (voucher_id = ? and stock > 0)
-         */
+        // 5.一人下一单需求
+        Long userId = UserHolder.getUser().getId();
+        synchronized (userId.toString().intern()) {
+            IVoucherOrderService proxy = (IVoucherOrderService) AopContext.currentProxy();
+            return proxy.createVoucherOrder(voucherId);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result createVoucherOrder(Long voucherId) {
+        Long userId = UserHolder.getUser().getId();
+        //5.1 根据优惠券id和用户id查询订单
+        Integer count = query()
+                .eq("user_id", userId).eq("voucher_id", voucherId)
+                .count();
+        //5.2 判断当前用户是否下单
+        if (count > 0) {
+            // 下单成功，已经下单返回已下单
+            return Result.fail("用户不能重复下单");
+        }
+        // 未下单，扣减库存
         boolean isSuccess = seckillVoucherService.update()
                 .setSql("stock = stock - 1")
-                .eq("voucher_id", voucherId).gt("stock", 0)
+                .eq("voucher_id", voucherId)
+                .gt("stock", 0)
                 .update();
         // 如果库存不足，返回错误
-        if (!isSuccess){
+        if (!isSuccess) {
             return Result.fail("库存不足！");
         }
-        //4. 新建一个订单并返回订单id
+        //4. 新建一个订单
         VoucherOrder voucherOrder = new VoucherOrder();
         long orderId = redisIdWorker.nextId("voucher_order");
         voucherOrder.setId(orderId);
-        Long userId = UserHolder.getUser().getId();
         voucherOrder.setUserId(userId);
         voucherOrder.setVoucherId(voucherId);
-        //5. 保存订单
+        //6. 保存订单
         save(voucherOrder);
+        // 7. 返回订单id
         return Result.ok(orderId);
     }
 
