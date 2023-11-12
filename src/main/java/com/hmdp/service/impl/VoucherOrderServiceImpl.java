@@ -8,13 +8,17 @@ import com.hmdp.mapper.VoucherOrderMapper;
 import com.hmdp.service.ISeckillVoucherService;
 import com.hmdp.service.IVoucherOrderService;
 import com.hmdp.utils.RedisIdWorker;
+import com.hmdp.utils.SimpleRedisLock;
 import com.hmdp.utils.UserHolder;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+
+import static com.hmdp.utils.RedisConstants.LOCK_ORDER_KEY;
 
 /**
  * <p>
@@ -32,6 +36,9 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
 
     @Resource
     private ISeckillVoucherService seckillVoucherService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 秒杀下单
@@ -55,9 +62,20 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         }
         // 5.一人下一单需求
         Long userId = UserHolder.getUser().getId();
-        synchronized (userId.toString().intern()) {
+        // 8. 在集群环境下 并发执行
+        //创建锁对象
+        SimpleRedisLock lock = new SimpleRedisLock(LOCK_ORDER_KEY + userId, stringRedisTemplate);
+        //获取锁
+        boolean isLock = lock.tryLock(1200L);
+        if (!isLock) {
+            return Result.fail("当前用户不允许重复下单！");
+        }
+        try {
             IVoucherOrderService proxy = (IVoucherOrderService) AopContext.currentProxy();
             return proxy.createVoucherOrder(voucherId);
+        } finally {
+            //释放锁
+            lock.delLock();
         }
     }
 
