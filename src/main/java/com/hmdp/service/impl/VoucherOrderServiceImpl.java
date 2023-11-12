@@ -64,7 +64,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         Long userId = UserHolder.getUser().getId();
         // 8. 在集群环境下 并发执行
         //创建锁对象
-        SimpleRedisLock lock = new SimpleRedisLock(LOCK_ORDER_KEY + userId, stringRedisTemplate);
+        SimpleRedisLock lock = new SimpleRedisLock(userId.toString(), stringRedisTemplate);
         //获取锁
         boolean isLock = lock.tryLock(1200L);
         if (!isLock) {
