@@ -121,5 +121,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:5.2.15.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.7.17" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.83" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.6" level="project" />
   </component>
 </module>
