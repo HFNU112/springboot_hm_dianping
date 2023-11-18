@@ -5,6 +5,8 @@ import com.hmdp.service.IShopService;
 import com.hmdp.utils.RedisIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -14,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.hmdp.utils.RedisConstants.SHOP_GEO_KEY;
@@ -30,6 +33,9 @@ class HmDianPingApplicationTests {
 
     @Resource
     private RedisIdWorker redisIdWorker;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     /**
      * 导入店铺数据到 geo
@@ -60,6 +66,22 @@ class HmDianPingApplicationTests {
             }
             stringRedisTemplate.opsForGeo().add(SHOP_GEO_KEY + typeId,locations);
         }
+    }
+
+    @Test
+    void testRedisson() throws InterruptedException {
+        //获取可重入锁
+        RLock rLock = redissonClient.getLock("RLock");
+        //尝试获取锁
+        boolean isLock = rLock.tryLock(1, 10, TimeUnit.SECONDS);
+        if (isLock){
+            try {
+                log.info("执行业务代码");
+            } finally {
+                rLock.unlock();
+            }
+        }
+
     }
 
 }
