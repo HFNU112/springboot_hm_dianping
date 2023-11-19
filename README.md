@@ -22,10 +22,16 @@ start nginx  启动
 #### 项目演示
 
 1、短信验证
+
+![login](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/login.gif)
     
 2、redis缓存
 
+![cache](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/cache.gif)
+
 3、redis分布式锁
+
+![lock](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/lock.gif)
 
 4、redis消息队列
 
@@ -35,7 +41,7 @@ start nginx  启动
 
 7、redis的BitMap的位图统计功能
 
-8、redis的Set集合
+8、redis的Set关注或互关列表
 
 9、redis的List集合列表
 
