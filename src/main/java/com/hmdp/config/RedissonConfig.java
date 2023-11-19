@@ -22,4 +22,20 @@ public class RedissonConfig {
                 .setPassword("123456");
         return Redisson.create(config);
     }
+
+    @Bean
+    public RedissonClient redissonClient2() {
+        Config config = new Config();
+        config.useSingleServer()
+                .setAddress("redis://192.168.241.128:6380");
+        return Redisson.create(config);
+    }
+
+    @Bean
+    public RedissonClient redissonClient3() {
+        Config config = new Config();
+        config.useSingleServer()
+                .setAddress("redis://192.168.241.128:6379");
+        return Redisson.create(config);
+    }
 }

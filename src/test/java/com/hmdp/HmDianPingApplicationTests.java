@@ -4,6 +4,7 @@ import com.hmdp.entity.Shop;
 import com.hmdp.service.IShopService;
 import com.hmdp.utils.RedisIdWorker;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -36,6 +37,23 @@ class HmDianPingApplicationTests {
 
     @Resource
     private RedissonClient redissonClient;
+
+    @Resource
+    private RedissonClient redissonClient2;
+
+    @Resource
+    private RedissonClient redissonClient3;
+
+    private RLock lock;
+
+    @BeforeEach
+    void setUp(){
+        RLock lock1 = redissonClient.getLock("lock");
+        RLock lock2 = redissonClient.getLock("lock");
+        RLock lock3 = redissonClient.getLock("lock");
+        //创建联锁
+        lock = redissonClient.getMultiLock(lock1, lock2, lock3);
+    }
 
     /**
      * 导入店铺数据到 geo
