@@ -1,19 +1,18 @@
 package com.hmdp.service.impl;
 
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.dto.Result;
 import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.ShopType;
 import com.hmdp.mapper.ShopTypeMapper;
 import com.hmdp.service.IShopTypeService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.utils.UserHolder;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -63,9 +62,9 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
         if (shopTypeList.size() != 0){
             //存在，遍历List集合写入redis
             for (ShopType shopType : shopTypeList) {
-                stringRedisTemplate.opsForList().rightPushAll(CACHE_SHOP_TYPE_KEY + UserHolder.getUser().getId(),JSONUtil.toJsonStr(shopType));
-                stringRedisTemplate.expire(CACHE_SHOP_TYPE_KEY, CACHE_SHOP_TYPE_TTL, TimeUnit.MINUTES);
+                stringRedisTemplate.opsForList().rightPushAll(CACHE_SHOP_TYPE_KEY + userId,JSONUtil.toJsonStr(shopType));
             }
+            stringRedisTemplate.expire(CACHE_SHOP_TYPE_KEY + userId, CACHE_SHOP_TYPE_TTL, TimeUnit.MINUTES);
         }
         //返回数据
         return Result.ok(shopTypeList);
