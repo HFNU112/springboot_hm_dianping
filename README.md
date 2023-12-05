@@ -43,10 +43,15 @@ start nginx  启动
 
 8、redis的Set关注或互关列表
 
-9、redis的List集合列表
+![followed](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/followed.gif)
 
-10、redis的Sorted Sets排行榜
+9、redis的探店笔记
 
+![notes](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/notes.gif)
+
+10、redis的Sorted Sets点赞排行榜
+
+![liked](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/liked.gif)
 
 #### 使用说明
 
