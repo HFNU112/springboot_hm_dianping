@@ -23,7 +23,7 @@ public class RedissonConfig {
         return Redisson.create(config);
     }
 
-    @Bean
+    /*@Bean
     public RedissonClient redissonClient2() {
         Config config = new Config();
         config.useSingleServer()
@@ -37,5 +37,5 @@ public class RedissonConfig {
         config.useSingleServer()
                 .setAddress("redis://192.168.241.128:6379");
         return Redisson.create(config);
-    }
+    }*/
 }
