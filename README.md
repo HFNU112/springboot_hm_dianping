@@ -4,19 +4,19 @@
 springboot+redis在线点评客户端项目
 
 #### 环境部署
-后端代码：git clone https://gitee.com/hfnu_112/springboot_hm_dianping_demo.git
+后端代码: 
+git clone https://gitee.com/hfnu_112/springboot_hm_dianping_demo.git
           git checkout develop
 
-前端代码；git clone https://gitee.com/huyi612/hmdp-web.git
-
-工程部署到nginx: cd E:/springboot_03_web_work/nginx-1.18.0/html/hmdp  (我的nginx目录)
+前端工程: 
+nginx: cd nginx-1.18.0\\html\\hmdp  (我的nginx目录)
 
 前端工程运行：
-cd E:/springboot_03_web_work/nginx-1.18.0
-start nginx  启动
-本地访问：http://localhost:8080/
+cd nginx-1.18.0\\nginx.exe
+start nginx.exe
+前端访问：http://localhost:8080/
 
-后端：http://localhost:8081/shop-type/list
+后端启动：http://localhost:8081/shop-type/list
 
 
 #### 项目演示
