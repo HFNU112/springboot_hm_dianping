@@ -18,6 +18,12 @@ start nginx.exe
 
 后端启动：http://localhost:8081/shop-type/list
 
+API文档接口
+外网链接
+> https://console-docs.apipost.cn/preview/8b519f05121cfd44/8ef46184c5663e18
+
+内网链接
+> http://192.168.133.1:10393/shareDoc?issue=240a1277c6e49858e230b039f919f5c9
 
 #### 项目演示
 
