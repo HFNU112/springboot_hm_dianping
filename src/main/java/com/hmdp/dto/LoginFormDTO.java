@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(description = "用户登录参数")
+@ApiModel(value = "用户登录参数", description = "用户登录参数")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

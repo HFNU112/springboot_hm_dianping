@@ -7,4 +7,8 @@ public class SystemConstants {
     public static final int MAX_PAGE_SIZE = 10;
 
     public static final String X_ACCESS_TOKEN = "X-Access-Token";
+
+    public static final Integer SC_OK_200 = 200;
+
+    public static final Integer SC_INTERNAL_SERVER_ERROR_500 = 500;
 }
