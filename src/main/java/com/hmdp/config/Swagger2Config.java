@@ -1,5 +1,6 @@
 package com.hmdp.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,14 +14,15 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @Author Husp
  * @Date 2023/12/22 21:58
  */
 @Configuration
-//@EnableSwagger2    //开启 Swagger2
-//@EnableKnife4j     //开启 knife4j，可以不写
+@EnableSwagger2    //开启 Swagger2
+@EnableKnife4j     //开启 knife4j，可以不写
 //@Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config extends WebMvcConfigurationSupport {
 
@@ -39,7 +41,7 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
      * swagger2的配置文件，这里可以配置swagger2的一些基本的内容，比如扫描的包等等
      * @return
      */
-    @Bean
+    @Bean(value = "defaultApi2")
     public Docket defaultApi2(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
@@ -103,10 +105,10 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("API接口文档")
+                .title("hmdpAPI接口文档")
                 .version("v1.0.1")
-                .description("C端产品项目API接口")
-                .contact(new Contact("后端开发产品预研项目组", "研发技术员", "shunpeng_hu@126.com"))
+                .description("hmdpC端产品项目API接口")
+                .contact(new Contact("后端产品开发项目组", "www.baidu.com", "shunpeng_hu@126.com"))
                 .license("The Apache License, Version 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .build();
