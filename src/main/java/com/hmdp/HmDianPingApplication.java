@@ -24,7 +24,7 @@ public class HmDianPingApplication {
         String port = env.getProperty("server.port");
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application hmdp is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:" + port + "/\n\t" +
+                "Local: \t\thttp://localhost:" + port + "/doc.html\n\t" +
                 "External: \thttp://" + ip + ":" + port + "/\n\t" +
                 "Swagger文档: \thttp://" + ip + ":" + port + "/doc.html\n" +
                 "----------------------------------------------------------");

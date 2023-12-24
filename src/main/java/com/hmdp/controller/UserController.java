@@ -8,6 +8,8 @@ import com.hmdp.entity.UserInfo;
 import com.hmdp.service.IUserInfoService;
 import com.hmdp.service.IUserService;
 import com.hmdp.utils.UserHolder;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpSession;
  * @since 2021-12-22
  */
 @Slf4j
+@Api(tags = "用户登录")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -36,6 +39,7 @@ public class UserController {
     /**
      * 发送手机验证码
      */
+    @ApiOperation(value = "发送手机验证码")
     @PostMapping("/code")
     public Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
         return userService.sendCode(phone, session);
@@ -44,6 +48,7 @@ public class UserController {
     /**
      * 登录功能
      */
+    @ApiOperation(value = "登录")
     @PostMapping("/login")
     public Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
         return userService.login(loginForm, session);
@@ -52,12 +57,14 @@ public class UserController {
     /**
      * 登出功能
      */
+    @ApiOperation(value = "登出")
     @PostMapping("/logout")
     public Result logout(){
         UserHolder.removeUser();
         return Result.ok();
     }
 
+    @ApiOperation(value = "查询用户详情")
     @GetMapping("/me")
     public Result me(){
         //获取当前登录的用户并返回
@@ -65,6 +72,7 @@ public class UserController {
         return Result.ok(user);
     }
 
+    @ApiOperation(value = "查询用户登录状态")
     @GetMapping("/info/{id}")
     public Result info(@PathVariable("id") Long userId){
         // 查询详情
