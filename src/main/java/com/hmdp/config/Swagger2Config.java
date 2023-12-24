@@ -105,9 +105,9 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("hmdpAPI接口文档")
+                .title("hmdp 后台服务API接口文档")
                 .version("v1.0.1")
-                .description("hmdpC端产品项目API接口")
+                .description("hmdp C端产品项目后台API接口")
                 .contact(new Contact("后端产品开发项目组", "www.baidu.com", "shunpeng_hu@126.com"))
                 .license("The Apache License, Version 2.0")
                 .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
