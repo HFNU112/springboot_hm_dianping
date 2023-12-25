@@ -45,6 +45,7 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
     public Docket defaultApi2(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .groupName("v1.0.1")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.hmdp.controller"))
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
