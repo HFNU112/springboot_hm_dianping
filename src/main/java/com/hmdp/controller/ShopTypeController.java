@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @author 虎哥
  * @since 2021-12-22
  */
-@Api(tags = "店铺数据接口")
+@Api(tags = "店铺类型接口")
 @RestController
 @RequestMapping("/shop-type")
 public class ShopTypeController {

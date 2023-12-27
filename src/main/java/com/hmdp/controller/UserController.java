@@ -10,6 +10,7 @@ import com.hmdp.service.IUserService;
 import com.hmdp.utils.UserHolder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,8 @@ public class UserController {
      */
     @ApiOperation(value = "发送手机验证码")
     @PostMapping("/code")
-    public Result sendCode(@RequestParam("phone") String phone, HttpSession session) {
+    public Result sendCode(@RequestParam("phone") @ApiParam(value = "手机号码") String phone,
+                           HttpSession session) {
         return userService.sendCode(phone, session);
     }
 
@@ -50,7 +52,7 @@ public class UserController {
      */
     @ApiOperation(value = "登录")
     @PostMapping("/login")
-    public Result login(@RequestBody LoginFormDTO loginForm, HttpSession session){
+    public Result login(@ApiParam(name = "loginForm", value = "登录参数", required = true) @RequestBody LoginFormDTO loginForm, HttpSession session){
         return userService.login(loginForm, session);
     }
 
@@ -61,7 +63,7 @@ public class UserController {
     @PostMapping("/logout")
     public Result logout(){
         UserHolder.removeUser();
-        return Result.ok();
+        return Result.ok("退出成功");
     }
 
     @ApiOperation(value = "查询用户详情")
@@ -74,7 +76,7 @@ public class UserController {
 
     @ApiOperation(value = "查询用户登录状态")
     @GetMapping("/info/{id}")
-    public Result info(@PathVariable("id") Long userId){
+    public Result info(@ApiParam(name = "id", value = "用户id") @PathVariable("id") Long userId){
         // 查询详情
         UserInfo info = userInfoService.getById(userId);
         if (info == null) {
@@ -90,6 +92,7 @@ public class UserController {
     /**
      * 用户当天签到
      */
+    @ApiOperation(value = "用户当天签到")
     @PostMapping("/sign")
     public Result sign(){
         return userService.sign();
@@ -98,8 +101,9 @@ public class UserController {
     /**
      * 查询用户详情
      */
+    @ApiOperation(value = "查询用户详情")
     @GetMapping("{id}")
-    public Result queryUserById(@PathVariable("id") Long userId){
+    public Result queryUserById(@ApiParam(name = "id", value = "用户id", required = true) @PathVariable("id") Long userId){
         return userService.queryUserById(userId);
     }
 }
