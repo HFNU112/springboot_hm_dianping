@@ -18,11 +18,14 @@ import java.util.List;
 @ApiModel(value="接口返回对象", description="接口返回对象")
 public class Result {
 
+    @ApiModelProperty(value = "状态码")
+    private Integer code;
+
     @ApiModelProperty(value = "成功标志")
     private Boolean success;
 
-    @ApiModelProperty(value = "返回错误提示")
-    private String errorMsg;
+    @ApiModelProperty(value = "返回消息提示")
+    private String message;
 
     @ApiModelProperty(value = "返回数据对象")
     private Object data;
@@ -107,15 +110,18 @@ public class Result {
 //    }
 
     public static Result ok(){
-        return new Result(true, null, null, null);
+        return new Result(200,true, null, null, null);
+    }
+    public static Result ok(Integer code, String message){
+        return new Result(code, true, message, null, null);
     }
     public static Result ok(Object data){
-        return new Result(true, null, data, null);
+        return new Result(200,true, null, data, null);
     }
     public static Result ok(List<?> data, Long total){
-        return new Result(true, null, data, total);
+        return new Result(200,true, null, data, total);
     }
-    public static Result fail(String errorMsg){
-        return new Result(false, errorMsg, null, null);
+    public static Result fail(String message){
+        return new Result(500,false, message, null, null);
     }
 }

@@ -9,6 +9,7 @@ import com.hmdp.service.IShopService;
 import com.hmdp.utils.SystemConstants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -36,7 +37,7 @@ public class ShopController {
      */
     @ApiOperation(value = "根据店铺id查询商铺信息")
     @GetMapping("/{id}")
-    public Result queryShopById(@PathVariable("id") Long id) {
+    public Result queryShopById(@PathVariable("id") @ApiParam(value = "店铺id") Long id) {
         return shopService.queryShopById(id);
     }
 
@@ -47,7 +48,7 @@ public class ShopController {
      */
     @ApiOperation(value = "新增商铺信息")
     @PostMapping
-    public Result saveShop(@RequestBody Shop shop) {
+    public Result saveShop(@RequestBody @ApiParam(value = "店铺信息对象", required = true) Shop shop) {
         // 写入数据库
         shopService.save(shop);
         // 返回店铺id
@@ -61,7 +62,7 @@ public class ShopController {
      */
     @ApiOperation(value = "更新商铺信息")
     @PutMapping
-    public Result updateShop(@RequestBody Shop shop) {
+    public Result updateShop(@RequestBody @ApiParam(value = "店铺信息对象") Shop shop) {
         // 写入数据库
         return shopService.updateShop(shop);
     }
@@ -72,8 +73,8 @@ public class ShopController {
     @ApiOperation(value = "根据商铺类型分页查询商铺信息")
     @GetMapping("/of/type")
     public Result queryShopByType(
-            @RequestParam("typeId") Integer typeId,
-            @RequestParam(value = "current", defaultValue = "1") Integer current
+            @RequestParam("typeId") @ApiParam(value = "店铺类型id") Integer typeId,
+            @RequestParam(value = "current", defaultValue = "1") @ApiParam(value = "当前页") Integer current
     ) {
         return shopService.queryShopByType(typeId, current);
     }
@@ -87,8 +88,8 @@ public class ShopController {
     @ApiOperation(value = "根据商铺名称关键字分页查询商铺信息")
     @GetMapping("/of/name")
     public Result queryShopByName(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "current", defaultValue = "1") Integer current
+            @RequestParam(value = "name", required = false) @ApiParam(value = "商铺名称") String name,
+            @RequestParam(value = "current", defaultValue = "1") @ApiParam(value = "当前页") Integer current
     ) {
         // 根据类型分页查询
         Page<Shop> page = shopService.query()
