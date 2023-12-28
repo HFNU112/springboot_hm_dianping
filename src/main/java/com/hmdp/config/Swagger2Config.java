@@ -1,5 +1,6 @@
 package com.hmdp.config;
 
+
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2    //开启 Swagger2
 @EnableKnife4j     //开启 knife4j，可以不写
-//@Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Config extends WebMvcConfigurationSupport {
 
     /**
@@ -44,16 +44,15 @@ public class Swagger2Config extends WebMvcConfigurationSupport {
     @Bean(value = "defaultApi2")
     public Docket defaultApi2(){
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(true)
                 .apiInfo(apiInfo())
+                .groupName("v1.0.1")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.hmdp.controller"))
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .paths(PathSelectors.any())
                 .build();
-//                .securitySchemes(Collections.singletonList(securityScheme()))
-//                .securityContexts(securityContexts())
-//                .globalOperationParameters(setHeaderToken());
     }
 
     /**
