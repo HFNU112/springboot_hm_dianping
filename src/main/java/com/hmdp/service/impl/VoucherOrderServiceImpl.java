@@ -11,14 +11,14 @@ import com.hmdp.utils.RedisIdWorker;
 import com.hmdp.utils.SimpleRedisLock;
 import com.hmdp.utils.UserHolder;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
-
-import static com.hmdp.utils.RedisConstants.LOCK_ORDER_KEY;
 
 /**
  * <p>
@@ -39,6 +39,41 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
+    private static final DefaultRedisScript<Long> SECKILL_SCRIPT;
+
+    static {
+        SECKILL_SCRIPT = new DefaultRedisScript<>();
+        SECKILL_SCRIPT.setLocation(new ClassPathResource("secKill.lua"));
+        SECKILL_SCRIPT.setResultType(Long.class);
+    }
+
+    /**
+     * 异步优化秒杀下单
+     * @param voucherId 优惠券id
+     * @return
+     */
+//    @Override
+//    public Result seckillVoucher(Long voucherId) {
+//        Long userId = UserHolder.getUser().getId();
+//        long orderId = redisIdWorker.nextId("order");
+//        //1.执行lua脚本
+//        Long result = stringRedisTemplate.execute(
+//                SECKILL_SCRIPT,
+//                Collections.emptyList(),
+//                voucherId.toString(), userId.toString(), String.valueOf(orderId)
+//        );
+//        //2.判断结果是否等于0
+//        int r = result.intValue();
+//        if (r != 0){
+//            //不等于0，记录异常
+//            return Result.fail(r == 1 ? "库存不足" : "重复下单");
+//        }
+//        //3.等于0，userId、voucherId存入队列
+//
+//        //返回订单id
+//        return Result.ok(orderId);
+//    }
 
     /**
      * 秒杀下单
