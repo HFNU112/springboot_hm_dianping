@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
  * @author 虎哥
  * @since 2021-12-22
  */
-@ApiModel(description = "优惠券对象请求数据")
+@ApiModel(value = "优惠券对象请求数据", description = "优惠券对象请求数据")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
