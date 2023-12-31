@@ -20,7 +20,7 @@ import static com.hmdp.utils.RedisConstants.SECKILL_STOCK_TTL;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author 虎哥
@@ -39,6 +39,11 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     public Result queryVoucherOfShop(Long shopId) {
         // 查询优惠券信息
         List<Voucher> vouchers = getBaseMapper().queryVoucherOfShop(shopId);
+        //库存存到redis
+        for (Voucher voucher : vouchers) {
+            Integer stock = voucher.getStock();
+            stringRedisTemplate.opsForValue().set(SECKILL_STOCK_KEY + voucher.getId(), String.valueOf(stock), SECKILL_STOCK_TTL, TimeUnit.MINUTES);
+        }
         // 返回结果
         return Result.ok(vouchers);
     }
