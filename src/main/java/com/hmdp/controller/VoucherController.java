@@ -6,6 +6,7 @@ import com.hmdp.entity.Voucher;
 import com.hmdp.service.IVoucherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,7 +34,7 @@ public class VoucherController {
      */
     @ApiOperation(value = "新增普通券")
     @PostMapping
-    public Result addVoucher(@RequestBody Voucher voucher) {
+    public Result addVoucher(@RequestBody @ApiParam(value = "优惠券对象") Voucher voucher) {
         voucherService.save(voucher);
         return Result.ok(voucher.getId());
     }
@@ -45,7 +46,7 @@ public class VoucherController {
      */
     @ApiOperation(value = "新增秒杀券")
     @PostMapping("seckill")
-    public Result addSeckillVoucher(@RequestBody Voucher voucher) {
+    public Result addSeckillVoucher(@RequestBody @ApiParam(value = "优惠券对象") Voucher voucher) {
         voucherService.addSeckillVoucher(voucher);
         return Result.ok(voucher.getId());
     }
@@ -57,7 +58,7 @@ public class VoucherController {
      */
     @ApiOperation(value = "查询店铺的优惠券列表")
     @GetMapping("/list/{shopId}")
-    public Result queryVoucherOfShop(@PathVariable("shopId") Long shopId) {
+    public Result queryVoucherOfShop(@PathVariable("shopId") @ApiParam(value = "店铺id") Long shopId) {
        return voucherService.queryVoucherOfShop(shopId);
     }
 }

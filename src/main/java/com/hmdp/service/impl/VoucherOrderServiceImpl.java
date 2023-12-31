@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 /**
  * <p>
@@ -49,70 +51,72 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     }
 
     /**
-     * 异步优化秒杀下单
+     * 异步优化 - 秒杀下单
      * @param voucherId 优惠券id
-     * @return
+     * @return 订单id
      */
-//    @Override
-//    public Result seckillVoucher(Long voucherId) {
-//        Long userId = UserHolder.getUser().getId();
-//        long orderId = redisIdWorker.nextId("order");
-//        //1.执行lua脚本
-//        Long result = stringRedisTemplate.execute(
-//                SECKILL_SCRIPT,
-//                Collections.emptyList(),
-//                voucherId.toString(), userId.toString(), String.valueOf(orderId)
-//        );
-//        //2.判断结果是否等于0
-//        int r = result.intValue();
-//        if (r != 0){
-//            //不等于0，记录异常
-//            return Result.fail(r == 1 ? "库存不足" : "重复下单");
-//        }
-//        //3.等于0，userId、voucherId存入队列
-//
-//        //返回订单id
-//        return Result.ok(orderId);
-//    }
+    @Override
+    public Result seckillVoucher(Long voucherId) {
+        long orderId = redisIdWorker.nextId("order");
+        Long userId = UserHolder.getUser().getId();
+        //1.执行lua脚本
+        Long result = stringRedisTemplate.execute(
+                SECKILL_SCRIPT,
+                Collections.emptyList(),
+                voucherId.toString(), userId.toString(), String.valueOf(orderId)
+        );
+
+        //2.判断结果是否等于0
+        assert result != null;
+        int r = result.intValue();
+        if (r != 0){
+            //不等于0，记录异常
+            return Result.fail(r == 1 ? "库存不足" : "用户不允许重复下单");
+        }
+        //3.等于0，抢购的优惠券信息(优惠券id、用户id)存入到阻塞队列中0
+
+        //返回订单id
+        return Result.ok(orderId);
+    }
 
     /**
      * 秒杀下单
      */
-    @Override
-    public Result seckillVoucher(Long voucherId) {
-        //1. 根据优惠券id查询优惠券信息
-        SeckillVoucher voucher = seckillVoucherService.getById(voucherId);
-
-        //2. 判断优惠券的日期是否生效
-        if (voucher.getBeginTime().isAfter(LocalDateTime.now())) {
-            //如果没有生效
-            return Result.fail("尚未到抢购时间，请您稍后在来...");
-        }
-        if (voucher.getEndTime().isBefore(LocalDateTime.now())) {
-            return Result.fail("本次活动已结束，请您关注后续...");
-        }
-        //3. 时间生效，判断库存是否充足
-        if (voucher.getStock() < 1) {
-            return Result.fail("很抱歉，本次活动已经抢完了");
-        }
-        // 5.一人下一单需求
-        Long userId = UserHolder.getUser().getId();
-        // 8. 在集群环境下 并发执行
-        //创建锁对象
-        SimpleRedisLock lock = new SimpleRedisLock(userId.toString(), stringRedisTemplate);
-        //获取锁
-        boolean isLock = lock.tryLock(1200L);
-        if (!isLock) {
-            return Result.fail("当前用户不允许重复下单！");
-        }
-        try {
-            IVoucherOrderService proxy = (IVoucherOrderService) AopContext.currentProxy();
-            return proxy.createVoucherOrder(voucherId);
-        } finally {
-            //释放锁
-            lock.delLock();
-        }
-    }
+//    @Override
+//    public Result seckillVoucher(Long voucherId) {
+//        //1. 根据优惠券id查询优惠券信息
+//        SeckillVoucher voucher = seckillVoucherService.getById(voucherId);
+//
+//        //2. 判断优惠券的日期是否生效
+//        if (voucher.getBeginTime().isAfter(LocalDateTime.now())) {
+//            //如果没有生效
+//            return Result.fail("尚未到抢购时间，请您稍后在来...");
+//        }
+//        if (voucher.getEndTime().isBefore(LocalDateTime.now())) {
+//            return Result.fail("本次活动已结束，请您关注后续...");
+//        }
+//        //3. 时间生效，判断库存是否充足
+//        if (voucher.getStock() < 1) {
+//            return Result.fail("很抱歉，本次活动已经抢完了");
+//        }
+//        // 5.一人下一单需求
+//        Long userId = UserHolder.getUser().getId();
+//        // 8. 在集群环境下 并发执行
+//        //创建锁对象
+//        SimpleRedisLock lock = new SimpleRedisLock(userId.toString(), stringRedisTemplate);
+//        //获取锁
+//        boolean isLock = lock.tryLock(1200L);
+//        if (!isLock) {
+//            return Result.fail("当前用户不允许重复下单！");
+//        }
+//        try {
+//            IVoucherOrderService proxy = (IVoucherOrderService) AopContext.currentProxy();
+//            return proxy.createVoucherOrder(voucherId);
+//        } finally {
+//            //释放锁
+//            lock.delLock();
+//        }
+//    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)

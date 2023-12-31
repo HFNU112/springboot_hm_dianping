@@ -27,6 +27,6 @@ public class LoginFormDTO {
     /**
      * 密码
      */
-    @ApiModelProperty(value = "密码")
+    @ApiModelProperty(value = "密码", required = false)
     private String password;
 }
