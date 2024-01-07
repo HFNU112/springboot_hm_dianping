@@ -41,24 +41,23 @@ API文档接口
 
 4、redis消息队列
 
-5、redis的GEOHash地理坐标
-
-6、redis的HyperLogLog数据集合统计功能
-
-7、redis的BitMap的位图统计功能
-
-8、redis的Set关注或互关列表
+5、redis的Set关注或互关列表
 
 ![followed](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/followed.gif)
 
-9、redis的探店笔记
+6、redis的探店笔记
 
 ![notes](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/notes.gif)
 
-10、redis的Sorted Sets点赞排行榜
+7、redis的Sorted Sets点赞排行榜
 
 ![liked](https://husp-system.oss-cn-shanghai.aliyuncs.com/assert/liked.gif)
 
+8、redis的GEOHash地理坐标
+
+9、redis的HyperLogLog数据集合统计功能
+
+10、redis的BitMap的位图统计功能
 
 #### 特技
 
