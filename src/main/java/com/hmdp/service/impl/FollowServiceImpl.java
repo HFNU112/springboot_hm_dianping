@@ -1,5 +1,6 @@
 package com.hmdp.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.hmdp.dto.Result;
 import com.hmdp.dto.UserDTO;
@@ -44,7 +45,7 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
         Long userId = UserHolder.getUser().getId();
 
         // 判断登录用户是否关注
-        if (Boolean.TRUE.equals(isFollow)){
+        if (isFollow){
             //如果状态true, 可以关注 向数据库新增数据
             Follow follow = new Follow();
             follow.setUserId(userId);
@@ -94,8 +95,9 @@ public class FollowServiceImpl extends ServiceImpl<FollowMapper, Follow> impleme
         }
         //不为空，查询这些用户集合
         List<Long> followUserIds = intersect.stream().map(Long::valueOf).collect(Collectors.toList());
-        List<Class<UserDTO>> users = userService.listByIds(followUserIds)
-                .stream().map(user -> UserDTO.class).collect(Collectors.toList());
+        List<UserDTO> users = userService.listByIds(followUserIds)
+                .stream().map(user -> BeanUtil.copyProperties(user,UserDTO.class))
+                .collect(Collectors.toList());
         //返回关注用户集合
         return Result.ok(users);
     }
