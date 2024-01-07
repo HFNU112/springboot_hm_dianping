@@ -69,4 +69,15 @@ public class ShopTypeServiceImpl extends ServiceImpl<ShopTypeMapper, ShopType> i
         //返回数据
         return Result.ok(shopTypeList);
     }
+
+    @Override
+    public Result saveShopType(ShopType shopType) {
+        //保存新的店铺类型
+        boolean isSuccess = save(shopType);
+        if (!isSuccess) {
+            return Result.fail("添加店铺类型失败~");
+        }
+        //返回店铺类型id
+        return Result.ok(shopType.getId());
+    }
 }

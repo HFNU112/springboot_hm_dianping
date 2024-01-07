@@ -106,5 +106,8 @@ public class RedisConstants {
      */
     public static final String USER_SIGN_KEY = "sign:";
 
+    /**
+     * 异步下单锁对象 redis key
+     */
     public static final String LOCK_ORDER_KEY = "lock:order:";
 }

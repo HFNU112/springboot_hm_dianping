@@ -19,4 +19,5 @@ public interface IShopTypeService extends IService<ShopType> {
      */
     Result queryTypeList();
 
+    Result saveShopType(ShopType shopType);
 }
