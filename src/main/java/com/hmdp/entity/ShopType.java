@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
  * @author 虎哥
  * @since 2021-12-22
  */
+@ApiModel(value = "店铺类型请求对象", description = "店铺类型请求对象")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -36,16 +39,19 @@ public class ShopType implements Serializable {
     /**
      * 类型名称
      */
+    @ApiModelProperty(value = "类型名称", required = true)
     private String name;
 
     /**
      * 图标
      */
+    @ApiModelProperty(value = "图标", required = true)
     private String icon;
 
     /**
      * 顺序
      */
+    @ApiModelProperty(value = "顺序", required = true)
     private Integer sort;
 
     /**

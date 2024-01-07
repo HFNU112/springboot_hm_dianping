@@ -6,6 +6,7 @@ import com.hmdp.entity.ShopType;
 import com.hmdp.service.IShopTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,7 +40,7 @@ public class ShopTypeController {
      */
     @ApiOperation(value = "添加店铺新品种类型")
     @PostMapping
-    public Result saveShopType(@RequestBody ShopType shopType){
+    public Result saveShopType(@RequestBody @ApiParam(value = "店铺类型请求对象", required = true) ShopType shopType){
         return typeService.saveShopType(shopType);
     }
 }
