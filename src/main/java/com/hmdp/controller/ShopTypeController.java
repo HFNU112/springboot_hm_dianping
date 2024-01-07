@@ -2,12 +2,11 @@ package com.hmdp.controller;
 
 
 import com.hmdp.dto.Result;
+import com.hmdp.entity.ShopType;
 import com.hmdp.service.IShopTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -33,5 +32,14 @@ public class ShopTypeController {
     @GetMapping("list")
     public Result queryTypeList() {
         return typeService.queryTypeList();
+    }
+
+    /**
+     * 添加店铺新品种类型
+     */
+    @ApiOperation(value = "添加店铺新品种类型")
+    @PostMapping
+    public Result saveShopType(@RequestBody ShopType shopType){
+        return typeService.saveShopType(shopType);
     }
 }
