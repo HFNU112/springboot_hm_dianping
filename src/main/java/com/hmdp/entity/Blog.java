@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
  * @author 虎哥
  * @since 2021-12-22
  */
+@ApiModel(value = "探店笔记请求对象", description = "探店笔记请求对象")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -35,10 +38,12 @@ public class Blog implements Serializable {
     /**
      * 商户id
      */
+    @ApiModelProperty(value = "商户id")
     private Long shopId;
     /**
      * 用户id
      */
+    @ApiModelProperty(value = "用户id")
     private Long userId;
     /**
      * 用户图标
@@ -59,16 +64,19 @@ public class Blog implements Serializable {
     /**
      * 标题
      */
+    @ApiModelProperty(value = "标题")
     private String title;
 
     /**
      * 探店的照片，最多9张，多张以","隔开
      */
+    @ApiModelProperty(value = "探店的照片，最多9张，多张以\",\"隔开")
     private String images;
 
     /**
      * 探店的文字描述
      */
+    @ApiModelProperty(value = "探店的文字描述")
     private String content;
 
     /**

@@ -76,7 +76,7 @@ public class BlogController {
 
     /**
      * 查询热门笔记列表
-     * TODO 补充需求分页查询笔记加redis 缓存
+     * 补充需求分页查询笔记加redis 缓存
      * @param current
      * @return
      */
@@ -88,7 +88,7 @@ public class BlogController {
 
     /**
      * 查询发布的笔记
-     * TODO 补充需求笔记缓存加到redis
+     * 补充需求笔记缓存加到redis
      * @param id
      * @return
      */
@@ -124,8 +124,8 @@ public class BlogController {
      */
     @ApiOperation(value = "查询关注用户的笔记")
     @GetMapping("/of/follow")
-    public Result queryBlogOfFollow(@RequestParam("lastId") @ApiParam(value = "上一次查询的最小时间戳") Long max,
-                                    @RequestParam(value = "offset", defaultValue = "0") @ApiParam(value = "偏移量") Integer offset){
+    public Result queryBlogOfFollow(@RequestParam("lastId") @ApiParam(value = "最小时间戳,下一次查询起始值") Long max,
+                                    @RequestParam(value = "offset", defaultValue = "0") @ApiParam(value = "偏移量,查询条数pagesize") Integer offset){
         return blogService.queryBlogOfFollow(max, offset);
     }
 
