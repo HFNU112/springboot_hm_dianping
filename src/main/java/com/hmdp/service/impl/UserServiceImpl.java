@@ -10,9 +10,8 @@ import com.hmdp.dto.UserDTO;
 import com.hmdp.entity.User;
 import com.hmdp.mapper.UserMapper;
 import com.hmdp.service.IUserService;
-import com.hmdp.utils.RegexUtils;
-import com.hmdp.utils.SystemConstants;
-import com.hmdp.utils.UserHolder;
+import com.hmdp.utils.*;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -108,16 +108,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         //获取当前日期
         LocalDateTime current = LocalDateTime.now();
-        String suffix = current.format(DateTimeFormatter.ofPattern(":yyyyMM"));
+        String format = current.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-        String key = USER_SIGN_KEY + userId + suffix;
-
-        //获取今天的日期
+        //获取今天是本月的第几天
         int dayOfMonth = current.getDayOfMonth();
 
         //写入redis
-        stringRedisTemplate.opsForValue().setBit(key, dayOfMonth - 1, true);
-        stringRedisTemplate.expire(key, 30, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().setBit(RedisConstants.USER_SIGN_KEY + userId + ":" + format, dayOfMonth - 1, true);
+        stringRedisTemplate.expire(RedisConstants.USER_SIGN_KEY + userId + ":" + format, RedisConstants.USER_SIGN_TTL, TimeUnit.DAYS);
         return Result.ok("签到成功");
     }
 
