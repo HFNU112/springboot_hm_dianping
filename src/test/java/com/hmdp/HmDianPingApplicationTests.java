@@ -2,9 +2,11 @@ package com.hmdp;
 
 import com.hmdp.entity.Shop;
 import com.hmdp.service.IShopService;
+import com.hmdp.utils.RedisConstants;
 import com.hmdp.utils.RedisIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -59,8 +61,9 @@ class HmDianPingApplicationTests {
      * 导入店铺数据到 geo
      */
     @Test
+    @DisplayName("导入店铺数据到操作成功")
     void importData(){
-        //查询数据
+        //查询所有店铺数据
         List<Shop> shopList = shopService.list();
 
         // 按typeId分组
@@ -71,18 +74,15 @@ class HmDianPingApplicationTests {
             //获取类型id
             Long typeId = shopEntry.getKey();
             List<Shop> value = shopEntry.getValue();
-
             List<RedisGeoCommands.GeoLocation<String>> locations = new ArrayList<>(value.size());
-
             //获取店铺集合
             for (Shop shop : value) {
                 // 每一条附近店铺信息写入redis
 //                stringRedisTemplate.opsForGeo().add(SHOP_GEO_KEY + typeId, new Point(shop.getX(), shop.getY()), shop.getId().toString());
-
-                locations.add(new RedisGeoCommands.GeoLocation<>(shop.getId().toString(),
-                        new Point(shop.getX(), shop.getY())));
+                locations.add(new RedisGeoCommands.GeoLocation<>(shop.getId().toString(), new Point(shop.getX(), shop.getY())));
             }
-            stringRedisTemplate.opsForGeo().add(SHOP_GEO_KEY + typeId,locations);
+            stringRedisTemplate.opsForGeo().add(RedisConstants.SHOP_GEO_KEY + typeId,locations);
+            stringRedisTemplate.expire(RedisConstants.SHOP_GEO_KEY + typeId, RedisConstants.SHOP_GEO_TTL, TimeUnit.DAYS);
         }
     }
 

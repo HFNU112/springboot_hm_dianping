@@ -74,9 +74,11 @@ public class ShopController {
     @GetMapping("/of/type")
     public Result queryShopByType(
             @RequestParam("typeId") @ApiParam(value = "店铺类型id") Integer typeId,
-            @RequestParam(value = "current", defaultValue = "1") @ApiParam(value = "当前页") Integer current
+            @RequestParam(value = "current", defaultValue = "1") @ApiParam(value = "当前页") Integer current,
+            @RequestParam(value = "x", required = false) @ApiParam(value = "经度") Double x,
+            @RequestParam(value = "y", required = false) @ApiParam(value = "纬度") Double y
     ) {
-        return shopService.queryShopByType(typeId, current);
+        return shopService.queryShopByType(typeId, current, x, y);
     }
 
     /**

@@ -97,14 +97,21 @@ public class RedisConstants {
     public static final String CACHE_FEED_KEY = "cache:feed:";
 
     /**
-     * geo 搜索路径 redis key
+     * geo 路径查询 redis key
      */
     public static final String SHOP_GEO_KEY = "shop:geo:";
+
+    /**
+     * geo 路径查询过期时间 redis key
+     */
+    public static final Long SHOP_GEO_TTL = 30L;
 
     /**
      * 用户签到 redis key
      */
     public static final String USER_SIGN_KEY = "sign:";
+
+    public static final Long USER_SIGN_TTL = 30L;
 
     /**
      * 异步下单锁对象 redis key
